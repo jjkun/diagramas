@@ -1,0 +1,76 @@
+Documentación del Sistema
+1. Estructura del Proyecto Backend
+El backend del sistema está organizado en diferentes paquetes, cada uno con una funcionalidad específica:
+
+1.1. Paquete beans
+Contiene objetos reutilizables que son transmitidos entre las diferentes capas de la aplicación. Estos objetos encapsulan la información necesaria para la comunicación entre los distintos componentes del sistema.
+1.2. Paquete config
+Contiene la clase AppConfig.java, que es responsable de crear y configurar el objeto JdbcTemplate. Este objeto se utiliza para realizar operaciones con la base de datos de manera eficiente.
+1.3. Paquete constantes
+Constantes.java: Define variables de valor constante utilizadas a lo largo de toda la aplicación.
+ConstantesSql.java: Contiene las consultas SQL necesarias para interactuar con la base de datos.
+1.4. Paquete controller
+Contiene las clases controladoras que manejan las solicitudes HTTP desde el frontend y devuelven las respuestas. Actúan como el puente entre el frontend y el backend.
+1.5. Paquete facade
+Contiene las clases encargadas de la lógica de negocio. Estas clases son utilizadas por las controladoras para procesar la información recibida y devolver los resultados al frontend.
+1.6. Paquete helpers
+Contiene clases que proporcionan utilidades adicionales para complementar la funcionalidad de las clases en el paquete facade o cumplir funciones específicas.
+1.7. Paquete infrastructure
+Maneja la gestión de errores, incluyendo clases dedicadas al manejo de excepciones y respuestas de error.
+1.8. Paquete mapper
+Contiene clases como ValidacionResponseMapper.java y ValidacionMapper.java, que se encargan de mapear los resultados de las consultas a la tabla tbl_validaciones con los beans correspondientes.
+1.9. Paquete model
+Define los modelos de datos (beans) utilizados por la aplicación. También incluye un enumerador TipoResultadoEnum.java.
+1.10. Paquete repository
+IRepository: Define la interfaz para el acceso a los datos.
+RepositoryImpl.java: Implementa la interfaz y maneja la manipulación de datos con la base de datos.
+1.11. Paquete utils
+Contiene clases como FechasUtil.java y Util.java, que proporcionan métodos de conversión y utilidades adicionales.
+1.12. Paquete validador
+Contiene las clases responsables de construir, ejecutar y aplicar las diversas validaciones que se realizan sobre los datos.
+2. Estructura del Proyecto Frontend
+El frontend se organiza dentro de la carpeta resources, que contiene todos los archivos utilizados para la interfaz de usuario:
+
+2.1. Carpeta templates
+Contiene los archivos HTML que definen las distintas vistas de la aplicación.
+2.2. Carpeta static
+Almacena archivos estáticos como JavaScript, CSS e imágenes.
+2.3. Carpeta css
+custom: Contiene archivos CSS personalizados para las vistas específicas.
+2.4. Carpeta js
+custom: Contiene archivos JavaScript personalizados para las vistas.
+3. Estructura de la Base de Datos
+La base de datos utilizada es db_validador, que contiene las siguientes tablas:
+
+tbl_validaciones: Tabla principal que almacena la información de las validaciones realizadas por los usuarios.
+tbl_resultados: Almacena los resultados de las validaciones, así como algunos datos utilizados para los detalles de las mismas.
+tbl_datos_generales: Almacena información del archivo de Datos Generales (DGE) que es relevante para las validaciones.
+tbl_amortizacion: Almacena información del archivo de Tabla de Amortización (TAM) que es relevante para las validaciones.
+tbl_movimientos: Almacena información del archivo de Movimientos (MOV) que es relevante para las validaciones.
+4. Validaciones Implementadas
+Validaciones para Folios Normales
+Cuadratura de Registros (ValidacionCuadraturaImpl.java):
+
+Se asegura que los folios estén presentes en los tres archivos (DGE, TAM y MOV).
+Importe del Crédito (ValidacionImporteCreditoImpl.java):
+
+Compara el Importe de Crédito (DGE), Insoluto Inicial (TAM) y Monto Base (MOV).
+Id. del Cliente (ValidacionIdCliente.java):
+
+Verifica que el identificador del cliente en el archivo DGE no sea nulo ni vacío.
+Último Insoluto Pagado (ValidacionInsolutoPagadoImpl.java):
+
+Compara el último Insoluto Pagado o Vencido (TAM) con el Monto Base (MOV).
+Último Insoluto Final Positivo (ValidacionInsolutoFinalPositivoImpl.java):
+
+Valida que el último Insoluto Final en el archivo TAM sea mayor a -1.
+Saldos Insolutos (ValidacionSaldosImpl.java):
+
+Compara Saldo Insoluto (DGE), Saldo Final (TAM) y Monto Base (MOV).
+Validaciones para Folios Vencidos
+Cuadratura de Registros:
+
+Aplica las mismas validaciones, excepto la validación del Número de Amortizaciones.
+Importe de Crédito (ValidacionImporteCreditoVencidosImpl.java):
+
+Compara Saldo Insoluto (DGE) con el Insoluto Final más Capitalizado (TAM).
